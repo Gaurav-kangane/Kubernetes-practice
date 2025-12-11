@@ -101,3 +101,7 @@ kubectl get pods
 In deployment workload you can change image
 i.e If you want to change image from httpd to nginx you can do it. After updating yml file run apply command
 
+For delete pod run below command
+kubectl delete -f pod.yml
+kubectl delete -f <yml file name>
+

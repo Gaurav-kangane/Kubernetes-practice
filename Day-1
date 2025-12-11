@@ -31,7 +31,7 @@ step-8 create pod.yml file inside write this
             image: nginx:1.14.2
             ports:
             - containerPort: 80
-*********************************************
+**********************************************************************************************************************
 
 step-9 Run file command = kubectl apply -f pod.yml
       to check how many pod running =  kubectl get pods
@@ -58,16 +58,23 @@ spec:
       containers:
       - name: nginx-container
         image: httpd
-********************************************************************************************************
+
+
 Run below commands after creating yml file
 kubectl apply -f replicaset.yml
 kubectl get pods  
 
+If you delete a pod kubectl delete pod <pod-name> then immediately controller check desired state and current state
+and one pod will be created.
+
+If we do change in replica count in yml file then run file immediately changes will reflect and create one more pod
+
 There is a disadvantage in replicaset workload that is you can't change image in yml file 
 If you created httpd image later you want to change to nginx you cant' do this action 
-To overcome this issue kubernets have Deployment workload.
+To overcome this issue kubernets have Deployment workload
 
 
+************************************************************************************************************************
 
 step-10 Create deployment.yml
 
@@ -104,4 +111,14 @@ i.e If you want to change image from httpd to nginx you can do it. After updatin
 For delete pod run below command
 kubectl delete -f pod.yml
 kubectl delete -f <yml file name>
+
+kubectl get pods  -o wide  ########### It lists all pods with extra details compared to the normal view.
+
+kubectl describe pod <pod-name>  ############## It will describe the pod information
+
+kubectl get rs  ############ This shows all ReplicaSets in the current namespace.
+
+kubectl delete rs web-rs  ######### It removes the ReplicaSet object from Kubernetes.
+                                    It also deletes all pods controlled by that ReplicaSet.
+
 

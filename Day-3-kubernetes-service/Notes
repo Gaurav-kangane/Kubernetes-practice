@@ -36,3 +36,19 @@ spec:
     - port: 80          # Service port
       targetPort: 80   # Pod port
       nodePort: 30007  # Exposed port on each node
+
+
+SVC applies all nodes levels by default not stick single node
+ex. If I create node port service same node port enabled for all nodes
+***********************************************************************************************************
+
+Practicle
+1. Create Eks and node group
+2. create 1 ec2 instance and connect it and install kubernetes and connfigure aws credentials
+3. create NodePort.yml file
+4. Run file = kubectl apply -f NodePort.yml
+5. kubectl get pods -o wide  = note internal ip 
+6. kubectl get nodes -o wide = take external ip of noted internal ip and search <ip>:<nodeport- mentioned in yml file>
+7. kubectl get svc = describes the services
+8. kubectl describe svc <service-name>
+

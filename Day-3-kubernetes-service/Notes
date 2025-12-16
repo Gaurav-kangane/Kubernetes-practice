@@ -52,3 +52,15 @@ Practicle
 7. kubectl get svc = describes the services
 8. kubectl describe svc <service-name>
 
+
+
+2. LoadBalancer =
+    A LoadBalancer Service in Kubernetes is the clean way to expose your application outside the cluster using a cloud provider’s native load balancer. 
+    Since you’re on AWS, this usually means an Application Load Balancer (ALB) or Network Load Balancer (NLB).
+
+Run LoadBalancer.yml file 
+kubectl get svc
+you will see load balancer take that and check web site is running or not.
+
+
+

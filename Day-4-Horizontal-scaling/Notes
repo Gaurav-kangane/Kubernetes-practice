@@ -17,4 +17,12 @@ What horizontal scaling really means
 
 
 Practicle
-Run Deploy.yml
+1. Run Deploy.yml --> kubectl apply -f Deploy.yml
+2. Run service.yml --> kubectl apply -f service.yml
+3. Run hpa.yml     --> kubectl apply -f hpa.yml
+
+4. run command --> kubectl get svc --> and copy loadbalancer url 
+5. run test.sh --> sh test.sh --> before running test file change loadbalancer url
+      test.sh is created for to increase cpu load 
+6. check the pod cpu load --> kubectl top pod
+7. check how many pods creating --> kubectl get pods

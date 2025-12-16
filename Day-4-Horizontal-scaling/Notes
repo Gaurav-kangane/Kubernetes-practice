@@ -1,0 +1,20 @@
+Horizontal Scaling =
+
+Horizontal scaling in Kubernetes means increasing or decreasing the number of pod replicas based on load. 
+Kubernetes does this using something called the Horizontal Pod Autoscaler (HPA).
+
+What horizontal scaling really means
+
+      More traffic → more pods
+      
+      Less traffic → fewer pods
+      
+      No changes to pod size or resources
+      
+      Scaling happens automatically based on metrics
+      
+      This is different from vertical scaling, where you increase CPU or memory of a pod.
+
+
+Practicle
+Run Deploy.yml

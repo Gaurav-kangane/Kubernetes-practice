@@ -64,3 +64,28 @@ you will see load balancer take that and check web site is running or not.
 
 
 
+
+
+3. ClusterIP =
+
+    A ClusterIP Service is the default and most common way to expose an application inside a Kubernetes cluster. 
+    It gives your app a stable virtual IP that is reachable only within the cluster.
+
+What ClusterIP does
+
+      Exposes pods on an internal IP
+      
+      Traffic stays inside the cluster
+      
+      Used for pod-to-pod and service-to-service communication
+      
+      Not accessible from outside the cluster directly
+
+
+Run clusterip.yml file
+kubectl get svc
+kubectl describe svc <svc name>
+note the IP and connect the node server and curl http://IP:80
+
+
+

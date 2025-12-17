@@ -68,3 +68,52 @@ Practicle =
 
 
 2. Rolling Update = 
+        Rolling Update is the default and most commonly used deployment strategy in Kubernetes.
+        It updates your application gradually, replacing old pods with new ones while keeping the app available.
+        No full shutdown. Users usually see no downtime.
+
+***How it works step by step =
+
+        Kubernetes creates a new pod with the updated version
+        Waits until the new pod is Ready
+        Terminates one old pod
+        Repeats until all pods are updated
+        Old and new versions run together for a short time.
+
+
+**Pros and Cons
+
+Pros
+    Near zero downtime
+    Safe for production    
+    Built into Kubernetes    
+    Easy rollback
+
+Cons
+    Old and new versions coexist briefly
+    Not ideal if versions are incompatible
+
+***************
+Rolling.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: web
+        image: web:v2
+
+*******************************************************************************************************************************

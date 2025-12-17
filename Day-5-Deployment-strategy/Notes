@@ -116,4 +116,16 @@ spec:
       - name: web
         image: web:v2
 
-*******************************************************************************************************************************
+
+Practicle=
+1. Create rolling.yml file and run it --> kubectl apply -f rolling.yml
+2. In yml file maxsurge is 25% and maxUnavailable is 25% the if you make changes in image 
+3. 25% of pods will create out of 100% and delete old 25% pods ie.(if running pods are 100 in which 25 pods will create with updated version and old pods
+   will be deleted then again 25 new create and 25 old delete this process contineous till 100 new pods will create.)
+4. kubectl get pods
+
+
+*************************************************************************************************************************************************
+
+
+

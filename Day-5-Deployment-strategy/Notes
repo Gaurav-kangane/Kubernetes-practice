@@ -129,3 +129,61 @@ Practicle=
 
 
 
+3. Blue Green Strategy = 
+
+        Blue Green is a deployment strategy where you run two complete versions of your application at the same time.
+        
+        Blue = current production version
+        
+        Green = new version
+        
+        Only one version receives live traffic at a time.
+
+**How it works step by step
+
+        1.Blue version is serving users
+        2.Green version is deployed separately
+        3.Green is tested internally
+        4.Traffic is switched from Blue to Green
+        5.Blue is kept for quick rollback
+        6.The traffic switch is usually instant.
+
+
+***Pros and Cons
+
+Pros
+    Zero downtime
+    
+    Instant rollback
+    
+    No version overlap for users
+
+Cons
+    Double infrastructure cost
+    
+    Manual or scripted traffic switch
+    
+    Needs good monitoring
+
+    If new application having bug that will impact to end users.
+
+
+Practicle = 
+1. There are 3 file blue.yml green.yml and service.yml
+2. In blue.yml we have v1 application code i.e old application run that file --> kubectl apply -f blue.yml
+3. Then write service.yml file --> kubectl apply service.yml
+4. In service file we set replica as blue then all traffic will redirect to blue application.
+5. Write the green.yml file --> kubectl apply -f green.yml
+6. In this step both application are running but we configured service file to blue application
+7. Run this command --> kubectl get svc --> kubectl describe svc <svc_name> --> note the NodePort port number 
+8. Then run command --> kubectl get pods -o wide --> you will see ec2.internal ip see that ip to take public ip of that internal ip and check the application http://35.173.35.171:31951
+9. If you want to move your all traffic to green app then do modifications in service.yml file
+10.Change replica from blue to green and apply changes --> kubectl apply -f service.yml
+11.Refresh the site you will see the new application on browser.
+
+
+
+***************************************************************************************************************************************************************************
+
+
+    

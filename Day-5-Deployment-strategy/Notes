@@ -1,0 +1,70 @@
+Deployment strategy in Kubernetes
+    1. Recreate 
+    2. Rolling Update
+    3. Blue Green Deployment
+    4. Cannary Deployment
+
+
+1. Recreate = 
+    Recreate is the simplest deployment strategy in Kubernetes.
+    Kubernetes terminates all existing pods first, then starts new pods with the updated version.
+
+*** How it works step by step
+
+   1. Old application pods are deleted
+    
+   2. Application becomes temporarily unavailable
+    
+   3. New pods are created with the new image or config
+    
+   4. Traffic resumes once pods are ready
+
+
+**** Pros and Cons
+Pros
+   1. Simple and predictable
+   2. No version conflicts
+   3. Clean startup
+
+Cons
+    1. Application downtime
+    2. Not fault tolerant during deployment
+
+## recreate.yml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: app
+        image: myapp:v2
+
+
+
+Practicle = 
+1. Create EKS and in compute option create nodegroup
+2. Create EC2 server for connecting to nodegroup
+3. Install kubernetes in ec2 server and then aws configure keys
+4. aws eks update-kubeconfig --region us-east-1 --name <cluster_name>
+5. write recreate.yml file and apply it --> kubectl apply -f recreate.yml
+6. kubectl get pods --> you will see running pods 
+7. Do some changes in recreate.yml file --> change image of yml file and apply it
+8. kubectl get pods --> You will see all old pods deleted and the new pods created at same timing
+
+
+*************************************************************************************************************************************
+
+
+
+
+2. Rolling Update = 

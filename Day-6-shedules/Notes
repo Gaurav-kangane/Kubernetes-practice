@@ -50,4 +50,31 @@ Practicle =
 7. Then check pods --> kubectl get pods --> all the pending pods will be in running state.
 8. For delabel node use command -->  kubectl label nodes <node-name> <label-key>-  e.g  kubectl label nodes ip-172-31-34-126.ec2.internal clr-
 9. If you delabel the node still pod is running because at the schedule time it will select the node with label name mentioned in yml file.
+10. kubectl get nodes --show-labels  ### To check labels of the nodes
+11.Also if we remove nodeselector lines from the yml file the pod are unlabeled then we run the file the unlabeled pods create in labeld node.
+12.But labeled pod is not run on unlabled nodes.
 
+
+***********************************************************************************************************************************************
+
+
+
+3. Node Affinity Preffered =
+      Preferred node affinity lets you guide pod placement without forcing it. 
+      Kubernetes will try to schedule the pod on matching nodes, but if none are available, it will still run the pod elsewhere.
+
+**What “preferred” means
+      1. Soft rule, not mandatory
+      2. Scheduler gives priority to matching nodes
+      3. Pod will not stay Pending if no node matches
+      4. Uses weights to decide preference strength
+
+Preferred affinity uses:
+      preferredDuringSchedulingIgnoredDuringExecution
+
+
+Practicle =
+1. Create affinity-preffered.yml file and apply it.
+2. kubectl get pods -o wide --> You will see pods are running we not labeled any nodes.
+3. Preferred node affinity works as follows: if the node labels match the pod’s affinity rules, the pods will be scheduled on the labeled nodes.
+4. If the pod’s preferred affinity labels do not match any node labels, the pods will still be created and can run on any available node.

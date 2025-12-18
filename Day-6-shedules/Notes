@@ -1,0 +1,53 @@
+There are 5 types of shedules are present in kubernetes
+1. Daemonset
+2. NodeSelector
+3. Affinity-preferred
+4. Affinity-required
+5. Taint Tolerations
+
+
+1. DaemonSet = 
+      A DaemonSet ensures that one pod runs on every eligible node in a Kubernetes cluster. It is mainly used for node-level services rather than app workloads.
+
+How DaemonSet scheduling works =
+  Automatic placement
+      1.When a DaemonSet is created, Kubernetes schedules one pod per matching node.
+      2.When a new node joins the cluster, the pod is automatically added.
+      3.When a node is removed, the pod is automatically deleted.
+
+Practicle =
+1. Create EKS and create nodegroup and create ec2 server for connect to nodegroup, configure aws credentials and aws eks update-kubeconfig --region us-east-1 --name <cluseter_name>
+2. Create daemon.yml file and apply it --> kubectl apply -f daemon.yml --> kubectl get pods
+3. You will see pod will create in each running nodes if you delete any pod it will create immediately.
+4. Go to Auto scaling and go to edit option in desired capacity increase the count.
+5. You will see new node will create and check the pods new pod will create, the desired capacity deponds on nodes if you delete node pod will delete.
+
+
+*************************************************************************************************************************************************************************************
+
+
+2. NodeSelector = 
+    nodeSelector is a simple way to control which nodes a pod can run on using node labels.
+
+**What nodeSelector does
+      1.It tells Kubernetes: run this pod only on nodes with specific labels
+      2.It uses exact key–value matching
+      3.If no node matches, the pod stays in Pending state
+
+**How it works
+    1.Nodes have labels (key=value)
+    2.Pod spec includes a nodeSelector
+    3.Scheduler places the pod only on matching nodes
+
+
+Practicle =
+1. Create Nodeselector.yml file and apply it --> kubectl apply -f Nodeselector.yml --> At end we add Nodeselector and label-key and label-value
+2. check pods created or not --> kubectl get pods --> you will see pods are in pending state because we not labeled the nodes.
+3. To label the node use this command -->> kubectl label nodes <node-name> <label-key>=<label-value>
+4. For finding the node name use command --> kubectl get pods -o wide --> check in Node option ip-ec2.internal is there so that is node name. 
+5. Also you can check node name in running ec2 instance page select any node you will see instance summery in which check Hostname type you will see node name e.g ip-172-31-34-126.ec2.internal
+6. kubectl label nodes  ip-172-31-34-126.ec2.internal clr=pink
+7. Then check pods --> kubectl get pods --> all the pending pods will be in running state.
+8. For delabel node use command -->  kubectl label nodes <node-name> <label-key>-  e.g  kubectl label nodes ip-172-31-34-126.ec2.internal clr-
+9. If you delabel the node still pod is running because at the schedule time it will select the node with label name mentioned in yml file.
+

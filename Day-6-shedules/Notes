@@ -75,6 +75,65 @@ Preferred affinity uses:
 
 Practicle =
 1. Create affinity-preffered.yml file and apply it.
-2. kubectl get pods -o wide --> You will see pods are running we not labeled any nodes.
+2. kubectl get pods -o wide --> You will see pods are running but we did not labeled any nodes.
 3. Preferred node affinity works as follows: if the node labels match the pod’s affinity rules, the pods will be scheduled on the labeled nodes.
 4. If the pod’s preferred affinity labels do not match any node labels, the pods will still be created and can run on any available node.
+5. Label the nodes --> kubectl label nodes <node_name> <key>=<value>
+6. Apply the yml file and then --> kubectl get pods -o wide --> you will see all the pod created on same nodes.
+
+***************************************************************************************************************************************************
+
+
+4. Affinity Required
+      Required node affinity is used when a pod must run only on specific nodes. If no node matches, the pod will not be scheduled.
+
+**What “required” means
+      1.Hard rule, mandatory
+      2.Pod runs only on matching nodes
+      3.If no node matches, pod stays Pending
+      4.No weights involved
+
+The field used is:
+      requiredDuringSchedulingIgnoredDuringExecution
+
+**How scheduling works
+      1.Scheduler checks all nodes
+      2.Nodes that do not match are rejected
+      3.Pod is placed only on a matching node
+      4.If matching nodes are removed later, the pod is not evicted
+
+Practicle =
+1. Create affinity-required.yml file apply file
+2. kubectl get pods -o wide --> pods are in pending state because labels are not matching with nodes.
+3. label the nodes --> kubectl label <node-name> <label-key>=<label-value> --> kubectl label nodes  ip-172-31-34-126.ec2.internal size=medium
+4. check pod status --> kubectl get pods --> all pods are running in same nodes.
+5. Required affinity works as: if the node labels match the pod’s affinity rules, the pods will be scheduled on the labeled nodes.
+6. If the pod’s required affinity labels do not match any node labels, the pods will still be in pending state.
+
+******************************************************************************************************************************************
+
+
+****NodeSelector Vs Affinity Required 
+
+##nodeSelector = 
+      1.Simple way to schedule pods on labeled nodes
+      2.Uses exact key = value match
+      3.All conditions are AND
+      4.Very easy to configure
+      5.Limited flexibility
+
+##Required node affinity =
+      1.Advanced scheduling control
+      2.Uses matchExpressions
+      3.Supports In, NotIn, Exists, Gt, Lt
+      4.Can express OR conditions
+      5.More flexible and recommended
+
+| Feature         | nodeSelector    | Required node affinity    |
+| --------------- | --------------- | ------------------------- |
+| Rule type       | Hard            | Hard                      |
+| Match type      | Exact match     | Expression-based          |
+| Operators       | Not supported   | In, NotIn, Exists, Gt, Lt |
+| OR condition    | ❌ No            | ✅ Yes                     |
+| Complexity      | Very simple     | Moderate                  |
+| Recommended for | Basic use cases | Production workloads      |

@@ -134,6 +134,135 @@ Practicle =
 | Rule type       | Hard            | Hard                      |
 | Match type      | Exact match     | Expression-based          |
 | Operators       | Not supported   | In, NotIn, Exists, Gt, Lt |
-| OR condition    | ❌ No            | ✅ Yes                     |
+| OR condition    | ❌ No            | ✅ Yes                  |
 | Complexity      | Very simple     | Moderate                  |
 | Recommended for | Basic use cases | Production workloads      |
+
+
+***************************************************************************************************************************************
+
+
+5. Taint Toleration =  Watch video 2025-12-17 for more details
+By default, the scheduler can place any pod on any node.
+Taints and tolerations let you control this, so only specific pods can run on specific nodes.
+
+Think of it as:
+      Taint on node: “Do not schedule pods here”
+      Toleration on pod: “I am allowed to run here”
+
+
+1.Taints (Node side)
+      A taint is applied to a node.
+
+Effects
+      1.NoSchedule
+      Pods without matching toleration will not be scheduled.
+      
+      2.PreferNoSchedule
+      Scheduler avoids the node if possible.
+      
+      3.NoExecute
+      Existing pods without toleration are evicted, new ones are blocked.
+
+e.g  kubectl taint nodes node1 env=prod:NoSchedule   #### Only pods that tolerate env=prod can run on node1.
+
+
+2. Tolerations (Pod side)
+      A toleration is added to a pod spec.
+
+toleration.yml
+tolerations:
+- key: "env"
+  operator: "Equal"
+  value: "prod"
+  effect: "NoSchedule"
+
+This pod can be scheduled on nodes tainted with env=prod:NoSchedule.
+
+**Important points
+      Tolerations do not force pods onto tainted nodes.
+      They only allow scheduling there.
+      
+      To force placement, use nodeSelector or node affinity along with tolerations.
+      
+      Taints protect nodes. Tolerations are permissions, not rules.
+
+
+Practicle =
+1. create toleration.yml file and taint the node.
+2. kubectl taint nodes <node-name> <key>=<value>:NoSchedule       ### command for taint the node 
+3. kubectl taint nodes <node-name> <key>=<value>:NoSchedule-      ### command for untaint the node
+4. In our case command is --> kubectl taint nodes ip-172-31-12-169.ec2.internal app=blue:NoSchedule
+5. apply toleration file --> kubectl apply -f toleration.yml 
+6. kubectl get pods -o wide --> you will see the pods are runnig on tainted node because toleration pods run on tainted nodes.
+7. Delete the pods --> kubectl delete -f .
+8. Make some changes in yml file remove the toleration block and apply file --> kubectl apply -f .
+9. kubectl get pods -o wide --> you will see all the pods are running in non taineted node.
+10. If you taint both the nodes with NoSchedule and remove toleration block from file then you apply file the pods will go in pending state.
+11. Untaint both the nodes --> kubectl taint nodes ip-172-31-12-169.ec2.internal app=blue:NoSchedule-
+12. Taint any one node with NoExecute --> kubectl taint nodes ip-172-31-12-169.ec2.internal app=blue:NoExecute
+13. Add toleration block in yml file with NoSchedule and apply file
+14. You will see pod will run on non tainted node because NoExecute will not allow toleration pods.
+15. change yml file and in toleration block NoSchedule replace with NoExcute block and apply file
+16. kubectl get pods -o wide --> you will see all the pods are running in NoExcute tainted node.
+17. Untaint the node and taint with NoSchedule
+18. Do changes in yml file replace NoExecute with NoSchedule and apply file.
+19. Check pods you will see pods running on noschedule node.
+20. Then untaint that node and taint with NoExecute and check the pods all the running pods will be deleted.
+
+Possible real time Scenarios of Taint and Toleration
+1. If a pod has a NoSchedule toleration and the node has a NoSchedule taint, the pod will run on the node.
+2. If a pod has no toleration and the node has a NoSchedule taint, the pod will remain in the Pending state.
+3. If a pod has a NoSchedule toleration and the node has a NoExecute taint, the pod will be evicted or will not stay running.
+4. If a pod has a NoExecute toleration and the node has a NoExecute taint, the pod will run on the node.
+5. If a pod is running due to a NoSchedule toleration and the node is later tainted with NoExecute, the pod will be deleted unless it has a NoExecute toleration.
+
+Pod has NoSchedule toleration and node has NoSchedule taint → pod runs on the node.
+
+Pod has no toleration and node has NoSchedule taint → pod stays in Pending state.
+
+Pod has PreferNoSchedule toleration and node has NoSchedule taint → pod stays in Pending state.
+
+Pod has NoExecute toleration and node has NoSchedule taint → pod stays in Pending state.
+
+Pod has no toleration and node has PreferNoSchedule taint → pod may run if no other nodes are available.
+
+Pod has PreferNoSchedule toleration and node has PreferNoSchedule taint → pod runs on the node.
+
+Pod has NoSchedule toleration and node has PreferNoSchedule taint → pod runs on the node.
+
+Pod has NoExecute toleration and node has PreferNoSchedule taint → pod runs on the node.
+
+Pod has no toleration and node has NoExecute taint → pod is evicted or will not stay running.
+
+Pod has NoSchedule toleration and node has NoExecute taint → pod is evicted or will not stay running.
+
+Pod has PreferNoSchedule toleration and node has NoExecute taint → pod is evicted or will not stay running.
+
+Pod has NoExecute toleration and node has NoExecute taint → pod runs on the node.
+
+Pod has NoExecute toleration with tolerationSeconds and node has NoExecute taint → pod runs for that duration and then is evicted.
+
+Pod toleration without effect specified and matching key or value → pod tolerates NoSchedule, PreferNoSchedule, and NoExecute taints.
+
+Pod toleration with operator Equal → pod tolerates only the exact key and value.
+
+Pod toleration with operator Exists and key specified → pod tolerates any value of that key.
+
+Pod toleration with operator Exists and no key → pod tolerates all taints on all nodes.
+
+Node has multiple taints → pod must tolerate all taints to run on that node.
+
+Pod has multiple tolerations → pod can run on any node whose taints are all tolerated.
+
+NoSchedule taint added after pod is running → existing pod continues running.
+
+NoExecute taint added after pod is running → pod is evicted if it lacks NoExecute toleration.
+
+DaemonSet pods automatically tolerate not-ready and unreachable taints.
+
+kubectl drain applies NoExecute taint and evicts non-DaemonSet pods.
+
+Pod has toleration only → pod may run on tainted or untainted nodes.
+
+Pod has toleration plus nodeSelector or nodeAffinity → pod runs only on the selected tainted node.

@@ -1,0 +1,28 @@
+Namespace = 
+    A namespace is a logical partition inside a Kubernetes cluster used to organize, isolate, and manage resources.
+
+**Why namespaces are used
+  Namespaces help to:
+    Separate environments like dev, test, prod
+    Avoid name conflicts between resources
+    Apply RBAC, resource quotas, and policies per group
+    Manage large clusters more easily
+
+**Default namespaces
+
+    Kubernetes creates these by default:
+    
+    default – where resources go if no namespace is specified
+    
+    kube-system – system components like kube-dns, kube-proxy
+    
+    kube-public – readable by all users, mostly for cluster info
+    
+    kube-node-lease – node heartbeat and lease objects
+
+
+commands= 
+1. kubectl get ns           ###### display all the namespace
+2. kubectl create ns <namespace-name>         ## namespace will create
+3. kubectl apply -f example.yml -n gsk        ## pods will create at gsk namespace
+4. kubectl get pods -n gsk                    ## show all the pods from gsk namespace

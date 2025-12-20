@@ -18,6 +18,6 @@ spec:
       containers:
       - name: swiggy-app
         #image: veeranarni/hotstar:latest
-        image: httpd
+        image: 088042034872.dkr.ecr.us-east-1.amazonaws.com/swiggy:latest
         imagePullPolicy: "Always"
         

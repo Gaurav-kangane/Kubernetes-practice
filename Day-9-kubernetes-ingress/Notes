@@ -1,0 +1,34 @@
+Ingress =
+  Ingress is the Kubernetes way to manage external HTTP and HTTPS traffic and route it to services inside the cluster. 
+  Think of it as a smart entry gate that decides where requests should go based on rules.
+
+**Why Ingress is used
+    Without Ingress, you usually expose apps using:
+    NodePort: Opens ports on every node.
+    LoadBalancer: Creates one cloud load balancer per service.
+
+**Ingress solves this by:
+    Using one load balancer
+    Routing to multiple services
+    Supporting path-based and host-based routing
+    Handling TLS termination in one place
+
+
+ingress.yml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - host: myapp.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 80

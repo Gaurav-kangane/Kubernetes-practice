@@ -32,3 +32,21 @@ spec:
             name: api-service
             port:
               number: 80
+
+
+************************************************************************************************************
+
+Practicle = 
+Default service LoadBalancer does not support path based routing that's why we are using ingress.
+
+1. create path1.yml file and apply it --> kubectl apply -f path1.yml
+2. create path2.yml file and apply it --> kubectl apply -f path2.yml
+3. create ingress.yml file and apply it --> kubectl apply -f ingress.yml
+4. In ingress file path is routed via service name 
+5. for getting load balancer check command --> kubectl get ingress
+6. copy the LoadBalancer and run on browser check application is running.
+7. http://LB/nginx --> it redierects to niginx app
+8. http://LB/httpd --> it redirects to httpd app
+9. Now create route53 A type record, select alias option then select --> Alias to Network Load balancer then select region and select LB
+10. Now create ingress-with-host.yml and apply it in this file add your host ip.
+11. Now check your host to browser and check all path based routing.

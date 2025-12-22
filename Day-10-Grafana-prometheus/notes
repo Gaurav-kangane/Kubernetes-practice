@@ -1,2 +1,4 @@
 We are monitoring our pods using grafana prometheus please visit the site for step to step process
 https://medium.com/@veerababu.narni232/deployment-of-prometheus-and-grafana-using-helm-in-eks-cluster-22caee18a872
+
+use 18283 dashboard id for kubernetes

@@ -1,0 +1,31 @@
+Helm =
+  Helm is a package manager for Kubernetes.
+
+Just like:
+
+  yum installs software on Linux
+  
+  npm installs Node packages
+
+👉 Helm installs and manages Kubernetes applications.
+
+In easy word Helm is like Terraform modules helm contains all configuration files like deployment, service, there is a values.yml file is also there if we want to create any application
+just we have do changes in value.yml file like we can add images, svervice type, replica count.
+
+1. helm create hotstar --> hotstar directory will create and inside all the kubernetes configuration files will create 
+2. for this application do some modification in values.yml add image, service custerip to nodeport
+3. helm install <FIRST_ARGUMENT_RELEASE_NAME> <SECOND_ARGUMENT_CHART_NAME> --> helm install app1 hotstar
+4. then run kubectl get pods --> check pods are running or not.
+5. If you do some modification in values file run this command helm upgrade app1 hotstar
+6. for uninstalling application run command --> helm uninstall <FIRST_ARGUMENT_RELEASE_NAME>  e.g helm uninstall app1
+
+
+
+Helm is like Terraform modules for Kubernetes and it contains all configuration files such as Deployment and Service, and we mainly change the values.yaml file to define image, service type, and replica count for an application.
+
+1. `helm create hotstar` creates a **hotstar** directory with all Kubernetes configuration templates.
+2. Modify `values.yaml` to add the Docker image, change service type from ClusterIP to NodePort, and set replica count.
+3. `helm install app1 hotstar` installs the application where **app1** is the release name and **hotstar** is the chart name.
+4. `kubectl get pods` is used to verify whether the pods are running.
+5. After updating `values.yaml`, run `helm upgrade app1 hotstar` to apply the changes.
+6. `helm uninstall app1` removes the application and all related Kubernetes resources.

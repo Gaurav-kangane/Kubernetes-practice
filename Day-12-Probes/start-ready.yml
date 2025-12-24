@@ -1,0 +1,38 @@
+## combination startup and readiness
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodejs-startup-readiness
+spec:
+  containers:
+  - name: nginx
+    image: 088042034872.dkr.ecr.us-east-1.amazonaws.com/nodeapp
+    ports:
+    - containerPort: 3000
+    startupProbe:
+      httpGet:
+        path: /
+        port: 3000
+      failureThreshold: 10
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5 
+
+## SVC
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeapp-lb-svc
+spec:
+  selector:
+    app: nodejs-startup-readiness
+  ports:
+    - port: 3000        # Service port
+      targetPort: 3000  # Container port
+  type: LoadBalancer

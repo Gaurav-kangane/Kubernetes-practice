@@ -43,6 +43,14 @@ You can follow same procedure in the official  AWS document [Getting started wit
    --nodes-min 2 \
    --nodes-max 2 \ 
    --zones <AZ-1>,<AZ-2>
+
+
+eksctl create cluster --name Gsk  \
+   --region us-east-1 \
+   --node-type c7i-flex.large \
+   --nodes-min 2 \
+   --nodes-max 2 \ 
+   --zones us-east-1a
    
    example:
    eksctl create cluster --name Gsk \

@@ -6,7 +6,7 @@ metadata:
   name: nodejs-startup-readiness
 spec:
   containers:
-  - name: nginx
+  - name: nodeapp
     image: 088042034872.dkr.ecr.us-east-1.amazonaws.com/nodeapp
     ports:
     - containerPort: 3000

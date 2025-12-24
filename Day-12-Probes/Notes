@@ -1,0 +1,24 @@
+1. Startup Probe
+    Purpose: Checks if the application has started successfully.
+    Until this passes, liveness and readiness probes are disabled.
+    
+    Use it for apps with long startup time.
+
+
+2. Readiness Probe
+
+    Purpose: Checks if the application is ready to serve traffic.
+    If it fails, the pod is removed from Service endpoints, but not restarted.
+    
+    Use it when startup is slow or during temporary failures like DB reconnect.
+
+
+3. Liveness Probe
+
+    Purpose: Checks if the application is alive.
+    If it fails, Kubernetes restarts the container.
+    
+    Use it when your app can hang or get stuck.
+    
+    Example use case:
+    App is running but not responding due to a deadlock.

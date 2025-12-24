@@ -1,0 +1,35 @@
+#pod
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodejs-readiness-test
+  labels:
+    app: nodejs-test
+spec:
+  containers:
+  - name: nodejs
+    image: 088042034872.dkr.ecr.us-east-1.amazonaws.com/nodeapp
+    ports:
+    - containerPort: 3000
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5
+
+---
+#svc
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-readiness-svc
+spec:
+  selector:
+    app: nodejs-test
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: LoadBalancer

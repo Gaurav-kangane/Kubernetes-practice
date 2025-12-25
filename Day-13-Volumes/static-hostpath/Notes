@@ -1,0 +1,120 @@
+1. Static hostPath PersistentVolume (PV)
+
+    What it is
+    
+    A hostPath PV uses a directory from the node’s local filesystem
+    
+    Static means you create the PV manually. Kubernetes does not auto-create it
+    
+    Mostly used for learning, testing, or single-node setups
+    
+    Not recommended for production because data is tied to one node
+
+Key points
+
+    Data lives on the node
+    
+    If the pod moves to another node, data is not available
+  
+    Node failure = data loss
+
+
+example.yml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hostpath-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /data/app
+
+************************************************************************
+
+
+2. PersistentVolumeClaim (PVC)
+
+    What it is
+    
+    A request for storage by a pod
+    
+    Acts as a bridge between pod and PV
+    
+    Pod never talks to PV directly
+
+Key points
+
+    PVC must match PV capacity and access mode
+    
+    Once bound, PVC is locked to that PV
+
+example.yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+***************************************************************************************************************************
+
+
+
+3. Deployment
+
+    What it is
+    
+    Manages pod lifecycle
+    
+    Ensures desired number of replicas are running
+    
+    Uses PVC to mount storage inside the container
+
+Important with hostPath
+
+    Use replicas: 1
+    
+    Pod must stay on the same node to access data
+
+example.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: app
+        image: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: app-storage
+      volumes:
+      - name: app-storage
+        persistentVolumeClaim:
+          claimName: hostpath-pvc
+****************************************************************************************************************************************************
+
+
+practicle =
+1. create pv.yml pvc.yml and deploy.yml and apply all --> kubectl apply -f .
+
+2. kubectl get pv  ## persistent volume status will be mounted
+
+3. kubectl get pvc  ## persistent volume claim - status is bound
+

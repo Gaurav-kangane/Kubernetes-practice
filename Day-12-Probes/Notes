@@ -22,3 +22,37 @@
     
     Example use case:
     App is running but not responding due to a deadlock.
+
+
+********************************************************************************************************************
+
+
+practicle = 
+
+startup.yml
+1. we are taking nodeapp image for this practicle it is also added in this repo and pushing to ECR
+
+2. Create Startup.yml file path we are giving default in default path our application is running. --> kubectl apply -f startup.yml
+
+3. kubectl get pods --> pod is running 1/1 then do some changes in path give any name e.g path: /start
+
+4. kubectl delete -f startup.yml and apply again --> kubectl apply -f startup.yml
+
+5. kubectl get pods --> you will see app status is 0/1 after 60 sec the pod will restart again because failureThreshold: 5 it will restart
+   till 5 and then it will go to CrashLoopBackOff state.
+
+
+readiness.yml
+1. In our yml file if apply it --> kubectl apply -f readiness.yml --> pod will creates successfully 
+
+2. kubectl get pods --> pod 1/1 running status --> because path we have give it is correct path. --> kubectl get endpoints --> check that for pod endpoint is created or not.
+
+3. If we do changes in path e.g /hello then --> kubectl delete -f readinesss.yml --> and apply again kubectl apply -f readinesss.yml
+
+4. kubectl get pods --> pod will in 0/1 state and it will not restart the pod.
+
+5. kubectl get endpoints --> no endpoints is created for pod.
+
+
+
+liveness.yml

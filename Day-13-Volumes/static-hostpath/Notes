@@ -118,3 +118,15 @@ practicle =
 
 3. kubectl get pvc  ## persistent volume claim - status is bound
 
+4. If we delete the pod it will create and mount to same pv.
+
+5. log in the pod --> kubectl exec -it <pod-name> -- /bin/bash  --> e.g kubectl exec -it mysql -- /bin/bash
+
+6. Then you logged in to the pod the image is mysql lets run my sql command --> mysql -u root -ppassword
+
+7. you will enter in mysql and then create database and create table.
+
+8. Aftet that check on which node pod running --> kubectl get pods -o wide --> kubectl get nodes -o wide 
+
+9. log in to that node and sudo su - --> after that check pv.yml file what path is mentioned and then --> cd /mnt/data --> go to mysql and check database created or not.
+

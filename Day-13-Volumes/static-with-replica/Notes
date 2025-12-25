@@ -1,0 +1,82 @@
+**StatefulSet in Kubernetes
+      A StatefulSet is used for stateful applications where identity, storage, and order matter. Think databases like MySQL, PostgreSQL, MongoDB, Kafka, or Zookeeper.
+
+**Key features
+1. Stable Pod Identity
+
+    Pod names are predictable
+    app-0, app-1, app-2
+    
+    If a pod restarts, it comes back with the same name
+
+
+2. Stable Network Identity
+
+    Each pod gets a stable DNS name
+    
+    Works with a Headless Service
+
+Example:  app-0.app-headless.default.svc.cluster.local
+
+
+
+3. Persistent Storage per Pod
+
+    Each pod gets its own PVC
+    
+    PVC is not deleted even if the pod is deleted
+    
+    Data stays attached to the same pod identity
+
+4. Ordered Pod Management
+
+    Pods are created one by one
+    
+    Pods are terminated in reverse order
+    
+    Useful for leader-follower or master-slave systems
+
+********************************************************************************************************************************************************
+
+
+2. Headless Service =
+      Headless Service in Kubernetes
+      A Headless Service is a service without a cluster IP. Instead of load balancing traffic, it directly exposes pod IPs using DNS.
+
+Why it is called “headless”
+    Normal Service → has a ClusterIP
+    
+    Headless Service → no ClusterIP
+    
+    DNS returns pod IPs, not a single virtual IP
+    
+    clusterIP: None
+
+
+What problem it solves
+    Needed when each pod must be contacted directly
+    
+    Required for StatefulSet
+    
+    Useful for databases, leader–follower systems, and peer discovery
+
+**********************************************************************************************************************************************************
+
+
+practicle =
+
+1. In pv.yml file 3 persistent volumes are created because we have 3 replicas, assume our app is mysql we are not using clusterIp we are using headless service.
+
+2. In statefulset.yml for easy understanding pod name, we are using it.
+
+3. Apply all file --> kubectl apply -f .
+
+4. kubectl get pods --> all the pods are creating one by one
+
+5. kubectl get pv --> all the pv created and bounded
+
+6. kubectl get pvc --> all the pvc bounded to pv
+
+7. If we delete any pod it will recreate and bound to same pv. 
+
+8. If we delete the pod storage is not going to delete it will bound to new pod.

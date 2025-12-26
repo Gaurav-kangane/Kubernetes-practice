@@ -1,0 +1,30 @@
+1. Create EKS cluster and add the add-ons "Amazon EBS CSI DRIVER" because The EBS CSI Driver allows Kubernetes to create, attach, detach, 
+   and delete Amazon EBS volumes dynamically for pods.
+
+2. create nodegroup use c7i-flex.large instance type
+
+3. create ec2 and install kubectl and configure aws keys and then aws eks update-kubeconfig --region us-east-1 --Name Gsk  
+
+4. create all the file required for dynamic volume like configmap, secret, storageclass and stateful.
+
+5. Apply all files kubectl apply -f . --> you will see pod is creating one by one i.e first one create after second and third.
+
+6. kubectl get pv --> you will see volume     and    kubectl get pvc --> volume claim will be there
+
+7. In storageclass file --> provisioner: ebs.csi.aws.com = AWS EBS CSI driver 
+
+8. volumeBindingMode: WaitForFirstConsumer --> means The volume is NOT created when the PVC is created  and 
+                                               The volume is created only after a Pod that uses the PVC is scheduled
+
+9. volumeBindingMode: Immediate  --> means volume will create it does not depends on pod will create or not.
+
+10. reclaimPolicy: Delete  --> if we delete the pvc the volume will be deleted  --> kubectl delete pvc <pvc-name>  --> kubectl get pvc (for pvc name)
+
+11. reclaimPolicy: Retain --> if we delete the pvc the volume will remain kept 
+
+
+12. In configmap file we are storing the database name , database user we are storing non sensitive data because we don't want to hardcore the
+    all details in statefulset file.
+
+13. In secret file we are storing root password, user password because it is sensitive data. In statefulset file we are calling the passwords from this file.
+

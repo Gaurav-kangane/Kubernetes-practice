@@ -1,1 +1,63 @@
+Storage Class =
+    A StorageClass defines how storage is created dynamically in Kubernetes.
+    You don’t create disks manually.
+    Kubernetes creates them on demand using the StorageClass.
 
+
+1.provisioner =
+    Defines who creates the volume.
+    Examples:
+      ebs.csi.aws.com → AWS EBS
+      
+      efs.csi.aws.com → AWS EFS
+      
+      kubernetes.io/gce-pd → GCP Disk
+      
+      rancher.io/local-path → Local storage
+
+
+2.volumeBindingMode =
+    Controls when the volume is created.
+    
+    Immediate=
+      1.Volume created as soon as PVC is created
+      2.Can cause AZ mismatch
+    
+    WaitForFirstConsumer (Best practice) 
+      1.Volume created only after Pod is scheduled
+      2.Volume is created in same AZ as node
+
+
+3.reclaimPolicy
+    Controls what happens to the volume after PVC deletion.
+    when you use policy = delete the volume will be deleted after pvc deletion
+    when you use policy = retain the volume will be kept after pvc deletion  (production recommanded)
+
+********************************************************************************************************************************************************************************
+
+
+1.Configmap = 
+    A ConfigMap is used to store non-sensitive configuration data.
+    Think of it like:
+      App settings that can change without rebuilding the image.
+
+    Examples:
+        App port
+        Environment name
+        Database host (not password)
+        Feature flags
+        App config files
+
+
+2. Secret = 
+    A Secret is used to store sensitive data securely.
+    Think of it like:
+      Passwords and keys that your app needs, but should not be hardcoded.
+    Examples:
+        Database passwords
+        API keys
+        Tokens
+        TLS certificates
+
+              
+              

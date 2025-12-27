@@ -1,0 +1,30 @@
+1. create cluster Eks and nodegroup and create ec2 and install kubectl and aws configure.
+
+2. create statefulset, pv, pvc, secret, clusterip and backend files and apply all --> kubectl apply -f .
+
+3. kubectl get pods --> 3 pods will be create 
+
+4. kubectl get svc --> check headless service --> kubectl describe mysql service
+
+5. kubectl get pv , kubectl get pvc
+
+6. log in the dns-client pod --> kubectl exec -it dns-client -- sh
+
+7. You will be logged in to the container run this command  --> nslookup <service-name>
+
+8. Test both servcies headless and clusterip and observer how traffic is routing 
+
+9. <pod-name>.<headless-service-name>.<namespace>.svc.cluster.local
+
+    nslookup mysql-0.mysql.default.svc.cluster.local
+    nslookup mysql-1.mysql.default.svc.cluster.local
+    nslookup mysql-2.mysql.default.svc.cluster.local
+    
+    <podname><headless>.defualt.svc.cluster.local
+    "mysql-0.mysql.default.svc.cluster.local" 
+
+10. That pod (dns-client) is just a temporary helper pod. It does not run MySQL or any app logic.
+    Think of it as a DNS test machine inside your Kubernetes cluster.
+    Check if a Service name resolves
+    Check headless Service behavior
+    Verify StatefulSet pod DNS names

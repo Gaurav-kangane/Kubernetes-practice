@@ -1,0 +1,42 @@
+1. create eks and nodegroup and configure aws keys inside server.
+
+2. create role.yml apply it --> kubectl apply -f role.yml   and   rolebinding.yml and apply --> kubectl apply -f rolebinding.yml
+
+3. create IAM user for giving permission of kubernetes cluster and copy the arn of that user.
+
+4. Run below command for map user -->  kubectl edit cm aws-auth -n kube-system
+
+5. Add this command below mapRoles block 
+mapUsers: |
+   - userarn: arn:aws:iam::088042034872:user/test        ## add arn of iam user
+     username: test         ## username of iam user
+     groups:
+     - gskrole              ## give your rolebinding group name
+
+6. save and exit the file
+
+7. create the new ec2 instance server and install kubectl and configure the credentials of IAM user and then apply below command 
+   aws eks update-kubeconfig --region us-east-1 --name <cluster-name>
+
+8. Then test all the permission which given in the role.yml
+
+9. You will allow only that permission mentioned in the role file apart from them all are denied.
+
+************************************************************************************************************************************
+
+Practicle for clusterRole
+
+1. create clusterrole.yml file and clusterrolebinding.yml then apply one by one.
+
+2. run this command --> kubectl edit cm aws-auth -n kube-system
+
+3. Add below command 
+mapUsers: |
+    - userarn: arn:aws:iam::381491944316:user/user-1
+      username: user-1
+      groups:
+      - system:masters
+
+4. Go to IAM user instance and check all the given permission you can check all cluster level permission
+   e.g kubectl get nodes , namespaces, persistentvolumes, storageclasses.
+

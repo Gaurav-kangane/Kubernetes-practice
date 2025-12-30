@@ -1,0 +1,39 @@
+RBAC (Role-Based Access Control) controls who can do what in your Kubernetes cluster.
+
+1. Role =
+    A Role in Kubernetes is an RBAC object that defines what actions are allowed on which resources inside a single namespace.
+
+##Key points about a Role
+
+    1.Namespace-scoped
+    A Role works only in one namespace (like dev, qa, or default).
+    
+    2.Defines permissions only
+    A Role does not give access by itself.
+    Access is granted only when it is attached using a RoleBinding.
+    
+    3.Controls resources + actions
+    You specify:
+    
+    4.Resources → pods, services, deployments, configmaps, etc.
+      Verbs → get, list, create, update, patch, delete, watch
+
+
+2. ClusterRole =
+    A ClusterRole defines what actions are allowed on which resources across the entire cluster.
+    It is not limited to a single namespace.
+
+**Key points about ClusterRole
+
+    1.Cluster-wide scope
+      Works across all namespaces and also for cluster-level resources.
+    
+    2.Can access non-namespaced resources
+      Example: nodes, namespaces, persistentvolumes, storageclasses.
+    
+    3.Permissions only
+      Like Role, it does nothing alone.
+      You must attach it using:
+    
+    4.ClusterRoleBinding (cluster-wide access)
+      RoleBinding (namespace-limited access)

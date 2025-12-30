@@ -1,0 +1,17 @@
+1. Service Account =  A ServiceAccount is an identity used by pods and applications running inside a Kubernetes cluster to talk to the Kubernetes API server.
+
+**Why Service Accounts are needed
+1.Pods may need to:
+    Read ConfigMaps or Secrets
+    List or watch Pods
+    Create or update resources
+    Call Kubernetes APIs securely
+
+2.Service Accounts provide:
+    Authentication (who you are)
+    Authorization (what you’re allowed to do via RBAC)
+
+Conclusion
+🔹 ServiceAccount → Used by pods to interact with the API.
+🔹 Role & RoleBinding → Grants permissions to the ServiceAccount.
+🔹 Attach to Pod → Use serviceAccountName in the pod spec.

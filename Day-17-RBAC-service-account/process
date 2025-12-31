@@ -58,5 +58,22 @@ output:_
 2025-02-16 16:50:28 syedmujtaba
 2025-04-24 09:50:11 syedredis
 
+11. Apply pod2.yml file --> kubectl apply -f pod2.yml --> in this file we removed the service account block
+
+12. kubectl get pods --> Take the pod name of pod2 file and log in the pod
+    kubectl exec -it <pod2-name> -- /bin/bash
+
+13. Install the CLI inside the pod
+yum install -y unzip curl
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
+14. check --> aws s3 ls --> you will get error because we not attachted IAM role to pod.
+
+15. kubectl delete -f pod2.yml file and do changes in file add serviceaccount block to pod and apply it.
+
+16. Log in the pod and check aws s3 ls you will get all the bucket list.
+
 
 

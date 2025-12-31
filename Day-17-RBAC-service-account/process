@@ -1,0 +1,62 @@
+####################### Kubernetes EKS  pod communication to AWS services ####################
+
+1. create eks and nodegroup and configure aws keys 
+
+2. create a json permission file for s3 access
+  vi s3-access-policy.json and insert below file
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+
+
+3. attach the policy 
+aws iam create-policy \
+  --policy-name EKS_S3_Access_Policy \
+  --policy-document file://s3-access-policy.json
+
+
+4. Go to IAM and in policy search for EKS_S3_Access_Policy and select and copy arn of policy.
+
+5. creating OIDC to connection node inside resource able to get communication outside eks cluster aws resources if permission is there
+   eksctl utils associate-iam-oidc-provider --region=ap-south-1 --cluster=cluster-name --approve
+
+6. Create an IAM Role for Service Account (using eksctl)
+eksctl create iamserviceaccount \
+  --name s3-access-sa \
+  --namespace default \
+  --cluster cluster-name \
+  --attach-policy-arn arn:aws:iam::203171087948:policy/EKS_S3_Access_Policy \
+  --approve
+
+7. Then apply pod.yml file inside the file we have a service account block
+
+8. kubectl get pods --> Then login the pod
+   kubectl exec -it aws-cli-pod -- /bin/bash
+
+9. install aws cli inside pod
+
+yum install -y unzip curl
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+
+
+10. Now run --> aws s3 ls  --> you will get all the bucket list
+
+output:_
+2025-03-12 14:02:28 mysmh.co.in
+2025-02-16 16:50:28 syedmujtaba
+2025-04-24 09:50:11 syedredis
+
+
+

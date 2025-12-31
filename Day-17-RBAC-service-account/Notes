@@ -15,3 +15,36 @@ Conclusion
 🔹 ServiceAccount → Used by pods to interact with the API.
 🔹 Role & RoleBinding → Grants permissions to the ServiceAccount.
 🔹 Attach to Pod → Use serviceAccountName in the pod spec.
+
+
+
+************************************************************************************
+
+2. OIDC (OpenID Connect) is how Kubernetes lets users authenticate using an external identity provider
+   OIDC is a way for Kubernetes to know who you are when you try to access a cluster.
+
+Think of it like this
+    Kubernetes = office building
+    OIDC provider = security gate (Google, Azure, etc.)
+    RBAC = permission rules inside the building
+
+    You first prove who you are at the gate.
+    Kubernetes then checks what you are allowed to do.
+
+What happens step by step
+    You run a kubectl command.
+    You log in using your company login (SSO).
+    You get a short-lived token.
+    Kubernetes checks the token and trusts it.
+    RBAC decides if you can view pods, create deployments, etc.
+
+Why people use OIDC
+    No username/password inside Kubernetes
+    Same login as email or company account
+    Easy to manage users and teams
+    More secure than shared kubeconfig files
+
+Very important point
+    OIDC = authentication (who you are)
+    RBAC = authorization (what you can do)
+   

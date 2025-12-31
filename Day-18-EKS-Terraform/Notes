@@ -1,0 +1,39 @@
+What are resources?
+  Resources mean CPU and memory that a container needs to run.
+  CPU is measured in cores or millicores
+    1 CPU = 1 core
+    500m = half a core
+
+Memory is measured in Mi, Gi  
+  256Mi, 512Mi, 1Gi, etc.
+
+ex.
+resources:
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+Meaning:
+  1.Pod is scheduled only if a node has at least 250m CPU and 256Mi memory
+  2.Container can scale up to 500m CPU and 512Mi memory
+  3.More than 512Mi memory → container restarts
+
+What happens in real scenarios?
+  Request set, limit not set
+  Pod gets guaranteed minimum
+  Can use extra resources if node is free
+
+Limit set, request not set
+  Kubernetes auto-sets request = limit
+  Can cause scheduling issues
+
+Memory exceeds limit
+  Container is killed (OOMKilled)
+
+CPU exceeds limit
+  Container is throttled, not killed
+  
+  

@@ -1,0 +1,119 @@
+Amazon ECS (Fargate) practical – step by step
+
+Create an AWS account and login to AWS Console
+
+Create an IAM user with admin permissions
+
+Install AWS CLI and configure it using aws configure
+
+Install Docker on your local machine
+
+Pull a sample image
+
+docker pull nginx
+
+
+Open Amazon Elastic Container Registry
+
+Create an ECR repository named nginx-demo
+
+Authenticate Docker to ECR
+
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+
+
+Tag the Docker image
+
+docker tag nginx:latest <account-id>.dkr.ecr.<region>.amazonaws.com/nginx-demo:latest
+
+
+Push the image to ECR
+
+docker push <account-id>.dkr.ecr.<region>.amazonaws.com/nginx-demo:latest
+
+
+Open Amazon Elastic Container Service
+
+Create a new ECS cluster
+
+Select AWS Fargate as infrastructure
+
+Name the cluster ecs-demo-cluster
+
+Go to Task Definitions
+
+Create a new task definition
+
+Select Fargate launch type
+
+Set task name nginx-task
+
+Set CPU 0.5 vCPU
+
+Set memory 1 GB
+
+Add container name nginx
+
+Use ECR image URI
+
+Add port mapping 80
+
+Enable CloudWatch logs
+
+Save task definition
+
+Go to the cluster
+
+Create a new service
+
+Choose Fargate launch type
+
+Select task definition nginx-task
+
+Set service name nginx-service
+
+Set desired tasks to 2
+
+Select default VPC
+
+Select at least two subnets
+
+Enable auto-assign public IP
+
+Create or select a security group
+
+Allow inbound HTTP 80 from 0.0.0.0/0
+
+Select Application Load Balancer
+
+Create a new load balancer
+
+Set listener port 80
+
+Set target type to IP
+
+Set health check path /
+
+Create the service
+
+Wait for tasks to reach RUNNING state
+
+Open EC2 → Load Balancers
+
+Copy ALB DNS name
+
+Paste DNS in browser
+
+Verify Nginx page loads
+
+ECS practical completed successfully
+
+***Cleanup steps (very important)
+
+Delete ECS service
+
+Delete ECS cluster
+
+Delete Load Balancer
+
+Delete ECR repository

@@ -1,0 +1,59 @@
+Amazon ECS (Elastic Container Service)
+    Amazon ECS is a fully managed container orchestration service from Amazon Web Services. 
+    It helps you run, scale, and manage Docker containers without needing to manage your own orchestration platform like Kubernetes.
+
+Core components
+1. Cluster
+
+    A cluster is a logical group where your containers run.
+    It can use:    
+    EC2 instances that you manage, or
+    Fargate, where AWS manages the servers for you.
+
+2. Task Definition
+
+    This is the blueprint of your application.
+    It defines:
+    
+    Container image (from ECR or Docker Hub)
+    
+    CPU and memory
+    
+    Port mappings
+    
+    Environment variables
+    
+    IAM role
+    
+    Logging configuration
+
+    Volumes
+
+3. Task
+    A task is a running instance of a task definition.
+    
+    One task can have one or more containers.
+    
+    Tasks can be run one time (batch jobs) or continuously.
+
+4. Service
+    A service keeps a specified number of tasks running all the time.
+    
+    Handles restarts if a task fails
+    
+    Integrates with load balancers
+    
+    Supports rolling updates and auto scaling
+    
+    Used mainly for long-running applications like APIs and web apps.
+
+5. Launch types
+    EC2 launch type
+    
+    You manage EC2 instances
+    
+    More control over instance types, AMIs, networking
+    
+    Slightly cheaper at large scale
+    
+    You are responsible for patching and capacity planning
